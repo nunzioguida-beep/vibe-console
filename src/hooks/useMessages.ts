@@ -35,7 +35,11 @@ export function useMessages(conversationId: string | null) {
           filter: `conversation_id=eq.${conversationId}`,
         },
         (payload) => {
-          setMessages((prev) => [...prev, payload.new as Message]);
+          setMessages((prev) =>
+            [...prev, payload.new as Message].sort(
+              (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+            )
+          );
         }
       )
       .subscribe();
